@@ -46,7 +46,7 @@ public class Bank
 		{
 			System.out.println("Desired username:");
 			username = read.next();
-			usernameTaken = checkTaken();
+			usernameTaken = checkTaken(username);
 		}
 		while(!passwordConfirmed)
 		{
@@ -71,7 +71,7 @@ public class Bank
 		try
 		{
 			System.out.println("Please select an option below.");
-			System.out.println("[D]eposit, [W]ithdrawal, [T]ransfer, [V]iew Account Balance, [L]ogout?");
+			System.out.println("[D]eposit, [W]ithdrawal, [T]ransfer, [V]iew Account Balance, D[e]lete account,[C]heck History, [L]ogout?");
 			return AccountMenuOptions.valueOf(read.next()); 
 			
 		}
@@ -100,11 +100,22 @@ public class Bank
 				case V:
 					viewBalanceMenu();
 					break;
+				case e:
+					createAccount();
+					break;
+				case C:
+					checkHistory();
+					break;
 				case L:
 					System.out.println("Have a nice day. Logging off...");
 					return;
 			}	
 		}
+	}
+
+	private static void checkHistory() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	private static void transferMenu() {
@@ -133,7 +144,7 @@ public class Bank
 		
 	}
 
-	private static boolean checkTaken() {
+	private static boolean checkTaken(String username) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -180,7 +191,7 @@ public class Bank
 	}
 	protected enum AccountMenuOptions 
 	{
-		D, W, T, V, L
+		D, W, T, V, L, e, C
 	}
 	
 }
