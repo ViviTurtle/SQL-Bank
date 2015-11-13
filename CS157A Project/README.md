@@ -36,26 +36,26 @@
 
 ######Deliverable
 
-1. Thursday, October 29 11:59
-> Submit a hard copy of report that includes
- * Team name
- * Members name
- * Project Title
- * Database Schema (DDL to create database and relations)
- * Functional Requirements of your system in English. These are functions to support the business logic of your application.
-2. Monday, November 9 5:00pm 
- * Create a set of power point slides that include
-  * Database Schema with constraints, also showing the relation(s) to be archived.
-  * At least 15 functional requirements and associated SQL programs
-  * Stored procedure(s)
-  * Trigger(s)
-  * Screenshots to show that at least three different user requests can be taken to the the running Java application and then be served successfully.
- * Create a goole doc and upload the powerpoint slides to the google doc.
- * Email me
-  * with a subject line [CS157A Section 1|2] the order number assigned to your team goes here
-      >Example subject line
-      >[CS157A Section1] 1 
-  * in mail content, write your team name, names of team members, and the URL of your google doc.
+~~1. Thursday, October 29 11:59~~
+~~> Submit a hard copy of report that includes~~
+~~ * Team name~~
+~~ * Members name~~
+~~ * Project Title~~
+~~ * Database Schema (DDL to create database and relations)~~
+~~ * Functional Requirements of your system in English. These are functions to support the business logic of your application.~~
+~~2. Monday, November 9 5:00pm ~~
+~~ * Create a set of power point slides that include~~
+~~  * Database Schema with constraints, also showing the relation(s) to be archived.~~
+~~  * At least 15 functional requirements and associated SQL programs~~
+~~  * Stored procedure(s)~~
+~~  * Trigger(s)~~
+~~  * Screenshots to show that at least three different user requests can be taken to the the running Java application and then be served successfully.~~
+~~ * Create a goole doc and upload the powerpoint slides to the google doc.~~
+~~ * Email me~~
+~~  * with a subject line [CS157A Section 1|2] the order number assigned to your team goes here~~
+~~      >Example subject line~~
+~~      >[CS157A Section1] 1 ~~
+~~  * in mail content, write your team name, names of team members, and the URL of your google doc.~~
 3. Tuesday November 10 or Thursday November 12 in class
 Intermediate Demo: Present the intermeidate demo using powerpoint slides you submitted. See intermediate demo guidelines for your preperation.
 4. Saturday, December 5, 11:59
