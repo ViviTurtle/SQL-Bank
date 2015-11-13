@@ -35,7 +35,6 @@
   * 	DataSet from CKAN
 
 ######Deliverable
-~~
 1. Thursday, October 29 11:59
 > Submit a hard copy of report that includes
  * Team name
@@ -57,7 +56,7 @@
       >[CS157A Section1] 1 
   * in mail content, write your team name, names of team members, and the URL of your google doc.
 3. Tuesday November 10 or Thursday November 12 in class
-Intermediate Demo: Present the intermeidate demo using powerpoint slides you submitted. See intermediate demo guidelines for your preperation.~~
+Intermediate Demo: Present the intermeidate demo using powerpoint slides you submitted. See intermediate demo guidelines for your preperation.
 4. Saturday, December 5, 11:59
 From the course web site, submit project.zip including all Java files, SQL files, and text files containing data. Delete all package statement from Java files so that I can run it using a default package.
 5. Tuesday, December 8 in class 
