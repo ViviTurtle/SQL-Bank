@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.oomph.setup.ui.synchronizer.SynchronizerDialog">
+		<item value="800" key="dialogWidth"/>
+		<item value="600" key="dialogHeight"/>
+	</section>
+	<section name="SetupWizard">
+		<section name="VariablePage">
+		</section>
+		<section name="ProgressPage">
+		</section>
+		<section name="ConfirmationPage">
+		</section>
+	</section>
+</section>
