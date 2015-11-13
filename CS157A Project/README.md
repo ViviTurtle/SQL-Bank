@@ -1,18 +1,14 @@
 #Fall 2015 CS157A 
-##Introduction to Database Management Systems
-
-##Term Project
-
-##Instructor: Dr. Kim
+###Introduction to Database Management Systems
+###Term Project
+###Instructor: Dr. Kim
 
 ######Overview
 
-```
-In this project, you are going to develop a non-trivial database and its application to demonstrate your knowledge in the subjects taught in this course.
-The software stack includes MySQL for DBMS, JDBC for connector, and Java program as a front-end application. The Java application can be console-based. If your application supports a GUI for user interactions, 10 points of extra credit (out of 100 points of the project grade). Since GUI is not a main focus of this project, the GUI of your application may be simple but working to test every function your system supports. Note that you need to stick to one type of input interface either GUI or console not both. As described later, executing SQL DDL scripts to create database, tables, triggers, and stored procedures will be done at MySQL directly. For this, you may use MySQL shell or MySQL workbench.
+>In this project, you are going to develop a non-trivial database and its application to demonstrate your knowledge in the subjects taught in this course.
+>The software stack includes MySQL for DBMS, JDBC for connector, and Java program as a front-end application. The Java application can be console-based. If your application supports a GUI for user interactions, 10 points of extra credit (out of 100 points of the project grade). Since GUI is not a main focus of this project, the GUI of your application may be simple but working to test every function your system supports. Note that you need to stick to one type of input interface either GUI or console not both. As described later, executing SQL DDL scripts to create database, tables, triggers, and stored procedures will be done at MySQL directly. For this, you may use MySQL shell or MySQL workbench.
 
-I recommend you to develop the application in an incremental way. For example, after constructing the database (or part of the database), you may try a small java program that pops up a text field or a button to take a user request and see if the program connects to the database through JDBC correctly and retrieves data by executing the expected sql program.
-```
+>I recommend you to develop the application in an incremental way. For example, after constructing the database (or part of the database), you may try a small java program that pops up a text field or a button to take a user request and see if the program connects to the database through JDBC correctly and retrieves data by executing the expected sql program.
 
 ######Definition of User
 
@@ -57,10 +53,8 @@ I recommend you to develop the application in an incremental way. For example, a
  * Create a goole doc and upload the powerpoint slides to the google doc.
  * Email me
   * with a subject line [CS157A Section 1|2] the order number assigned to your team goes here
-  ```
-      Example subject line
-      [CS157A Section1] 1
-  ```   
+      >Example subject line
+      >[CS157A Section1] 1 
   * in mail content, write your team name, names of team members, and the URL of your google doc.
 3. Tuesday November 10 or Thursday November 12 in class
 Intermediate Demo: Present the intermeidate demo using powerpoint slides you submitted. See intermediate demo guidelines for your preperation.
