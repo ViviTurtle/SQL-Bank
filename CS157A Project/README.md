@@ -2,7 +2,7 @@
 ###Introduction to Database Management Systems
 ###Term Project
 ###Instructor: Dr. Kim
-
+ 
 ######Overview
 
 >In this project, you are going to develop a non-trivial database and its application to demonstrate your knowledge in the subjects taught in this course.
