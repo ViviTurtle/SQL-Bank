@@ -1,7 +1,0 @@
-CHK,ACCOUNT,Checking Accout
-SAV,ACCOUNT,Savings Account
-WITH,TRANSANCTION,Withdrawal Transanction
-DEP,TRANSANCTION,Deposit Transanction
-TRNFR,TRANSANCTION,Transfer Transanction
-DEL,TRANSANCTION,Delete Transanction
-REGIS,TANSANCTON,Register for an Account
