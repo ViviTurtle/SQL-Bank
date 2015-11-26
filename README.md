@@ -1,9 +1,9 @@
 #Fall 2015 CS157A 
 ###Introduction to Database Management Systems
 ###Instructor: Dr. Kim
+###Authors: Vivi Langga, Laura Gandhi, and Chami Shah
 
-By Vivi Langga, Laura Gandhi, and Chami Shah
-######Project 
+#####Project 
 
 Implemented a simple Bank system that allows customers to create an account, deposit, withdraw, transfer, check transanctions, and delete their account. All data is stored on a mySQL Database
 
