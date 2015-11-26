@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Sql-bank by ViviTurtle</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Sql-bank</h1>
+        <p class="header">SQL-Bank: Intro to DB Management Project</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/ViviTurtle/SQL-Bank/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/ViviTurtle/SQL-Bank/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/ViviTurtle/SQL-Bank">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/ViviTurtle">ViviTurtle</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="fall-2015-cs157a" class="anchor" href="#fall-2015-cs157a" aria-hidden="true"><span class="octicon octicon-link"></span></a>Fall 2015 CS157A</h1>
+
+<h3>
+<a id="introduction-to-database-management-systems" class="anchor" href="#introduction-to-database-management-systems" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction to Database Management Systems</h3>
+
+<h3>
+<a id="instructor-dr-kim" class="anchor" href="#instructor-dr-kim" aria-hidden="true"><span class="octicon octicon-link"></span></a>Instructor: Dr. Kim</h3>
+
+<h3>
+<a id="authors-vivi-langga-laura-gandhi-and-chami-shah" class="anchor" href="#authors-vivi-langga-laura-gandhi-and-chami-shah" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors: Vivi Langga, Laura Gandhi, and Chami Shah</h3>
+
+<h5>
+<a id="project" class="anchor" href="#project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project</h5>
+
+<p>Implemented a simple Bank system that allows customers to create an account, deposit, withdraw, transfer, check transanctions, and delete their account. All data is stored on a mySQL Database</p>
+
+<h3>
+<a id="project-requirements" class="anchor" href="#project-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project Requirements</h3>
+
+<h6>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h6>
+
+<blockquote>
+<p>In this project, you are going to develop a non-trivial database and its application to demonstrate your knowledge in the subjects taught in this course.
+The software stack includes MySQL for DBMS, JDBC for connector, and Java program as a front-end application. The Java application can be console-based. If your application supports a GUI for user interactions, 10 points of extra credit (out of 100 points of the project grade). Since GUI is not a main focus of this project, the GUI of your application may be simple but working to test every function your system supports. Note that you need to stick to one type of input interface either GUI or console not both. As described later, executing SQL DDL scripts to create database, tables, triggers, and stored procedures will be done at MySQL directly. For this, you may use MySQL shell or MySQL workbench.</p>
+
+<p>I recommend you to develop the application in an incremental way. For example, after constructing the database (or part of the database), you may try a small java program that pops up a text field or a button to take a user request and see if the program connects to the database through JDBC correctly and retrieves data by executing the expected sql program.</p>
+</blockquote>
+
+<h6>
+<a id="definition-of-user" class="anchor" href="#definition-of-user" aria-hidden="true"><span class="octicon octicon-link"></span></a>Definition of User</h6>
+
+<ul>
+<li>public user. An example of such user is a potential guest who wants to make a reservation.</li>
+<li>An administrator is another type of user accessing your application. For example, a hotel manager may use your application to find the statistics of room reservations for this week (or month, etc).</li>
+<li>DBA - DBA functions can be done at the DBMS directly. In this project, the creation of database, tables, triggers, and stored procedures is going to be done by executing the corresponding DDL scripts at MySQL.</li>
+</ul>
+
+<h6>
+<a id="minimum-requirements" class="anchor" href="#minimum-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Minimum Requirements</h6>
+
+<ul>
+<li>The system should support at least 15 distinct functions to the users. Here the users means public users and the administrator of the application, not including DBA.</li>
+<li>The database involves at least 5 relations and total 15 attributes. There should be relations connect one relation to at least one other relation. The Loan relation in our case study is such an example, that is, Loan connects User and Book.</li>
+<li>Your system should be able to handle at least 5 significantly different queries involving different relations and attributes. Make sure to have at least one co-related subquery, group by and having, aggregation, outer join, and set operation. At least three of them must involve several relations simultaneously.</li>
+<li>All schema should come with a key constraint.</li>
+<li>Reference integrity constraints are imposed on all possible cases to avoid dangling pointers. Please avoid circular constraints.</li>
+<li>Define at least two triggers in the database</li>
+<li>In large database systems, it is very common that their data grows over time and an archive function, which copies older entries into an archive database, will be useful. You will follow a simple approach to implement this function. Supply one additional column called updatedAt to the relation you want to archive from. The value of this column will be set to the current time stamp whenever a tuple is created and modified, respectively. And write a stored procedure that takes a cutoff date as a parameter and copies all tuples that haven't been modified since the cutoff date into the archive. You may create a table serving as an archive when you construct the database in the first place. You must do this using transactions to prevent inconsistencies in your DB due to unsafe deletions. In other words, you need to write a stored procedure that include a transaction that will do the copy and deletion.</li>
+<li>Ideally, you pick a domain where lots of data is already available. However, the goal of this project is to assess your ability to construct the database, write queries to manipulate database and to develop its application program. Therefore, synthetic data can be used as long as they can demonstrate all the futures of your database system and its application.</li>
+</ul>
+
+<h6>
+<a id="project-ideas" class="anchor" href="#project-ideas" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project Ideas</h6>
+
+<ul>
+<li>Airline reservation, hotel reservation system, tennis court reservation, music band scheduling, library management, product management. Explore your ideas !</li>
+<li>Data Sets
+
+<ul>
+<li>Sample data sets for relational database is posted here.</li>
+<li>    DataSet from CKAN</li>
+</ul>
+</li>
+</ul>
+
+<h6>
+<a id="deliverable" class="anchor" href="#deliverable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deliverable</h6>
+
+<ol>
+<li>Thursday, October 29 11:59
+&gt; Submit a hard copy of report that includes
+
+<ul>
+<li>Team name</li>
+<li>Members name</li>
+<li>Project Title</li>
+<li>Database Schema (DDL to create database and relations)</li>
+<li>Functional Requirements of your system in English. These are functions to support the business logic of your application.</li>
+</ul>
+</li>
+<li>Monday, November 9 5:00pm 
+
+<ul>
+<li>Create a set of power point slides that include</li>
+<li>Database Schema with constraints, also showing the relation(s) to be archived.</li>
+<li>At least 15 functional requirements and associated SQL programs</li>
+<li>Stored procedure(s)</li>
+<li>Trigger(s)</li>
+<li>Screenshots to show that at least three different user requests can be taken to the the running Java application and then be served successfully.</li>
+<li>Create a goole doc and upload the powerpoint slides to the google doc.</li>
+<li>Email me</li>
+<li>with a subject line [CS157A Section 1|2] the order number assigned to your team goes here
+&gt;Example subject line
+&gt;[CS157A Section1] 1 </li>
+<li>in mail content, write your team name, names of team members, and the URL of your google doc.</li>
+</ul>
+</li>
+<li>Tuesday November 10 or Thursday November 12 in class
+Intermediate Demo: Present the intermeidate demo using powerpoint slides you submitted. See intermediate demo guidelines for your preperation.</li>
+<li>Saturday, December 5, 11:59
+From the course web site, submit project.zip including all Java files, SQL files, and text files containing data. Delete all package statement from Java files so that I can run it using a default package.</li>
+<li>Tuesday, December 8 in class 
+Submit the hard copy of final report in class. Here is the requirements of the final report.</li>
+</ol>
+
+<h6>
+<a id="final-report-requirements" class="anchor" href="#final-report-requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Final Report Requirements</h6>
+
+<ol>
+<li>Project title and names of team members on the front page</li>
+<li>Team name on the second page</li>
+<li>Database schema in the form of SQL CREATE TABLE. Specify key constraints and foreign key constraints in the schema.</li>
+<li>Screenshots of all relations after populating initial data. Label each relation clearly.</li>
+<li>List of at least 15 distinct functions excluding functions done by DBA</li>
+<li>All SQL select statements</li>
+<li>All SQL update statements</li>
+<li>All SQL delete statements</li>
+<li>All SQL insert statements</li>
+<li>All SQL triggers</li>
+<li>All SQL stored procedures</li>
+<li>Screenshots to demonstrate the following functionality. Label each screenshot clearly.</li>
+<li>each 15 functions</li>
+<li>archiving</li>
+<li>key constraint and foreign key constraint violations</li>
+<li>I don't need java source codes in the final report.</li>
+</ol>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
