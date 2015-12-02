@@ -207,15 +207,22 @@ public class Bank {
 			//Executes
 			ResultSet rs = cs.executeQuery();
 			//If Results is empty, it means it doesn't exist
-			if (!rs.isBeforeFirst()) {
-				System.out.println("Invalid Login. Returning to main menu...");
-				return false;
-			}
-			else{
+
+
 				rs.next();
 				//returns the ACCOUNT_ID column
 				account_id = rs.getInt("ACCOUNT_ID");
-			}
+				if (account_id == -1)
+				{
+					System.out.println("Account was deactivated. Please contact Vivi Langga at (408) 607-XXXX for any questons.");
+					return false;
+				}
+				else if (account_id == -2)
+				{
+					System.out.println("Invalid Login. Returning to main menu...");
+					return false;
+				}
+			
 		} catch (Exception ex) {
 			System.out.println(ex.toString());
 			System.exit(1);
@@ -243,7 +250,10 @@ public class Bank {
 				viewBalanceMenu();
 				break;
 			case e:
-				deleteAccountMenu();
+				if (deleteAccountMenu())
+				{
+					return;
+				}
 				break;
 			case C:
 				checkHistoryMenu();
@@ -282,45 +292,57 @@ public class Bank {
 	}
 
 	//------------------------------------TODO-------------------------------------------------------------
-	private static void deleteAccountMenu() {
+	private static boolean deleteAccountMenu() {
 		// TODO Auto-generated method stub
 		System.out.println("Are you sure you want to delete your account?");
 		System.out.println("[Y]es or [N]o?");
 		char value = read.next().charAt(0);
+		boolean validated = false;
 		
 		if (value == 'Y'){
 			try {
 				//Prepares to call Stored Procedure
-				CallableStatement cs = conn.prepareCall("{CALL SP_DELETE_ACCOUNT(?)}");
-				System.out.println("Please enter your username: ");
-				String username = read.next();
-			    cs.setString(1, username);
-				//Executes
-				 cs.executeQuery();
+				while (!validated)
+				{
+					CallableStatement cs = conn.prepareCall("{CALL SP_DELETE_ACCOUNT(?,?)}");
+					System.out.println("Please enter your username or press [Q] to [Q]uit: ");
+					String username = read.next();
+					if (username.equals("Q"))
+					{
+							return false;
+					}
+					System.out.println("Please enter your password: ");
+					String password = read.next();
+				    cs.setString(1, username);
+				    cs.setString(2, password);
+					//Executes
+					 ResultSet rs = cs.executeQuery();
+					 rs.next();
+					//returns the ACCOUNT_ID column
+					validated = rs.getBoolean("result");
+					if (!validated)
+					{
+						System.out.println("Invalid Account");	
+					}
+				}
 				
 					System.out.println("Your account has been deactivated!!");
-				
-			} catch (Exception ex) {
-				System.out.println(ex.toString());
+					return true;
+			} 
+			catch (Exception ex) {
+				System.out.println("Invalid Input.");
 				System.exit(1);
-			}
-			
+			}	
 		}
-		
 		else if (value == 'N'){
 			System.out.println("Your account is still active!!");
-			accountMainMenu();
+			return false;
 		}
-		
-		else{
+
 			System.out.println("Incorrect Input. Please try again!!");
-			deleteAccountMenu();
-		}
+			return deleteAccountMenu();
 		
-		
-
-
-
+	
 	}
 
 	private static void checkHistoryMenu() {
