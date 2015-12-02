@@ -419,59 +419,48 @@ public class Bank {
 	private static void withdrawalMenu() {
 		// TODO Auto-generated method stub
 		try{
-			System.out.println("[C]heckings or [S]avings account?");
-			char accountType = read.next().charAt(0);
 			double amt = 0.0;
-			if(accountType == 'C'){
+			System.out.println("[C]heckings or [S]avings account or [Q]uit?");
+			
+			char accountType = read.next().charAt(0);
+			while (accountType != 'C' && accountType !='S' && accountType !='Q')
+			{
+				System.out.println("Invalid Input.");
+				System.out.println("[C]heckings or [S]avings account or [Q]uit?");
+				accountType = read.next().charAt(0);
+			}
+			if (accountType == 'Q')
+			{
+				return;
+			}
+			System.out.println("Please enter the amount you want to withdraw: ");
+			amt = read.nextDouble();
+			while (amt < 0)
+			{
+				System.out.println("You cannot withdraw a negative amount of money.");
 				System.out.println("Please enter the amount you want to withdraw: ");
 				amt = read.nextDouble();
-				CallableStatement cs = conn.prepareCall("{CALL SP_WITHDRAW_AMOUNT(?,?,?)}");
-				cs.setInt(1, account_id);
+			}
+			CallableStatement cs = conn.prepareCall("{CALL SP_WITHDRAW_AMOUNT(?,?,?)}");
+			cs.setInt(1, account_id);
+			if (accountType == 'C') 
+			{
 				cs.setInt(2, 1);
-				cs.setDouble(3, amt);
-				//Executes
-				ResultSet rs = cs.executeQuery();
-				//If Results is empty, it means it doesn't exist
-				if (!rs.isBeforeFirst()) {
-					System.out.println("It doesnt exist!!");
-				}
-				else{
-					rs.next();
-					int balance = rs.getInt("AMOUNT");
-					System.out.println("Your current balance in Checkings Account is: " + balance + "$");
-				}
-
-			    //conn.close();
-
 			}
-			
-			else if(accountType == 'S'){
-				System.out.println("Please enter the amount you want to withdraw: ");
-				amt = read.nextDouble();
-				CallableStatement cs = conn.prepareCall("{CALL SP_WITHDRAW_AMOUNT(?,?,?)}");
-				cs.setInt(1, account_id);
+			else if (accountType == 'S')
+			{
 				cs.setInt(2, 2);
-				cs.setDouble(3, amt);
-				//Executes
-				ResultSet rs = cs.executeQuery();
-				//If Results is empty, it means it doesn't exist
-				if (!rs.isBeforeFirst()) {
-					System.out.println("It doesnt exist!!");
-				}
-				else{
-					rs.next();
-					int balance = rs.getInt("AMOUNT");
-					System.out.println("Your current balance in Savings Account is: " + balance + "$");
-				}
-
-			    //conn.close();
-
 			}
-			
-			else{
-				System.out.println("Invalid Entry!!");
-				withdrawalMenu();
+			cs.setDouble(3, amt);
+			//Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			int balance = rs.getInt("AMOUNT");
+			if (balance == -1)
+			{
+				System.out.println("You have insufficient funds. Please try again.");
 			}
+			else System.out.println("Sucess! Your current balance in this Account is: " + balance + "$");
 			
 			
 		}
@@ -489,8 +478,14 @@ public class Bank {
 			char accountType = read.next().charAt(0);
 			double amt = 0.0;
 			if(accountType == 'C'){
-				System.out.println("Please enter the amount you want to withdraw: ");
+				System.out.println("Please enter the amount you want to deposit: ");
 				amt = read.nextDouble();
+				while (amt < 0)
+				{
+					System.out.println("You cannot deposit a negative amount of money.");
+					System.out.println("Please enter the amount you want to deposit: ");
+					amt = read.nextDouble();
+				}
 				CallableStatement cs = conn.prepareCall("{CALL SP_DEPOSIT_AMOUNT(?,?,?)}");
 				cs.setInt(1, account_id);
 				cs.setInt(2, 1);
