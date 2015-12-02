@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -291,14 +292,12 @@ public class Bank {
 		D, W, T, V, L, e, C
 	}
 
-	//------------------------------------TODO-------------------------------------------------------------
+
 	private static boolean deleteAccountMenu() {
-		// TODO Auto-generated method stub
 		System.out.println("Are you sure you want to delete your account?");
 		System.out.println("[Y]es or [N]o?");
 		char value = read.next().charAt(0);
 		boolean validated = false;
-		
 		if (value == 'Y'){
 			try {
 				//Prepares to call Stored Procedure
@@ -340,9 +339,7 @@ public class Bank {
 		}
 
 			System.out.println("Incorrect Input. Please try again!!");
-			return deleteAccountMenu();
-		
-	
+			return deleteAccountMenu();	
 	}
 
 	private static void checkHistoryMenu() {
@@ -351,12 +348,70 @@ public class Bank {
 	}
 
 	private static void transferMenu() {
-		// TODO Auto-generated method stub
+		/*
+		try{
+			System.out.println("From your [C]heckings or [S]avings account?");
+			String accountType = read.next();
+			while (!accountType.equals("C") && !accountType.equals("S"))
+			{
+				System.out.println("Invalid Input");
+				System.out.println("From your [C]heckings or [S]avings account?");
+				accountType = read.next();
+			}
+				
+			
+			
+			if(accountType == 'C'){
+				CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
+				cs.setInt(1, account_id);
+				cs.setInt(2, 1);
+				//Executes
+				ResultSet rs = cs.executeQuery();
+				//If Results is empty, it means it doesn't exist
+				if (!rs.isBeforeFirst()) {
+					System.out.println("It doesnt exist!!");
+				}
+				else{
+					rs.next();
+					//returns the ACCOUNT_ID column
+					int balance = rs.getInt("AMOUNT");
+					System.out.println("Your current balance in Checkings Account is: " + balance + "$");
+				}
+				
+			}	
+			else if(accountType == 'S'){
+				CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
+				cs.setInt(1, account_id);
+				cs.setInt(2, 2);
+				//Executes
+				ResultSet rs = cs.executeQuery();
+				//If Results is empty, it means it doesn't exist
+				if (!rs.isBeforeFirst()) {
+					System.out.println("It doesnt exist!!");
+				}
+				else{
+					rs.next();
+					//returns the ACCOUNT_ID column
+					int balance = rs.getInt("AMOUNT");
+					System.out.println("Your current balance in Savings Account is: " + balance + "$");
+				}
+			}
+			else{
+				System.out.println("Invalid Entry!!");
+				viewBalanceMenu();
+			}
+		}
+		catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
 
+		}
+
+	
+*/
 	}
 
 	private static void viewBalanceMenu() {
-		// TODO Auto-generated method stub
 		try{
 			System.out.println("[C]heckings or [S]avings account?");
 			char accountType = read.next().charAt(0);
@@ -378,8 +433,7 @@ public class Bank {
 					System.out.println("Your current balance in Checkings Account is: " + balance + "$");
 				}
 				
-			}
-			
+			}	
 			else if(accountType == 'S'){
 				CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
 				cs.setInt(1, account_id);
@@ -396,17 +450,11 @@ public class Bank {
 					int balance = rs.getInt("AMOUNT");
 					System.out.println("Your current balance in Savings Account is: " + balance + "$");
 				}
-
-				
 			}
-			
 			else{
 				System.out.println("Invalid Entry!!");
 				viewBalanceMenu();
 			}
-
-
-
 		}
 		catch (Exception ex) {
 			System.out.println(ex.toString());
@@ -415,35 +463,76 @@ public class Bank {
 		}
 
 	}
+	
+	private static char getUserAccountType()
+	{
+		char accountType = read.next().charAt(0);
+		while (accountType != 'C' && accountType != 'S') 
+		{
+			System.out.println("Invalid Input");
+			System.out.println("[C]heckings or [S]avings account?");
+			accountType = read.next().charAt(0);
+		}
+		return accountType;
+	}
 
 	private static void withdrawalMenu() {
-		// TODO Auto-generated method stub
-		try{
-			double amt = 0.0;
-			System.out.println("[C]heckings or [S]avings account or [Q]uit?");
+		double amt;
+		try
+		{
+			System.out.println("[C]heckings or [S]avings account?");
+			char accountType = getUserAccountType();
+			double currentBalance = spGetCurrentBalance(accountType);
 			
-			char accountType = read.next().charAt(0);
-			while (accountType != 'C' && accountType !='S' && accountType !='Q')
-			{
-				System.out.println("Invalid Input.");
-				System.out.println("[C]heckings or [S]avings account or [Q]uit?");
-				accountType = read.next().charAt(0);
-			}
-			if (accountType == 'Q')
-			{
-				return;
-			}
+			amt = 0.0;
 			System.out.println("Please enter the amount you want to withdraw: ");
-			amt = read.nextDouble();
-			while (amt < 0)
+			amt = getUserDouble("withdraw");
+			while (amt > currentBalance)
 			{
-				System.out.println("You cannot withdraw a negative amount of money.");
+				System.out.println("Your withdraw amount is greater than your current balance.");
+				System.out.println("Your current balance is: $" + currentBalance);
 				System.out.println("Please enter the amount you want to withdraw: ");
-				amt = read.nextDouble();
+				amt = getUserDouble("withdraw");
 			}
+			currentBalance = spWithdraw(accountType, amt);
+			System.out.println("Success! Your current balance in this Account is: $ " + currentBalance);
+			
+		}
+		catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+		}
+
+	}
+	
+	private static double getUserDouble(String transanction)
+	{
+		String amtString = read.next();
+		while (!isDouble(amtString))
+		{
+			System.out.println("Invalid amount");
+			System.out.println("Please enter the amount you want to " + transanction +": ");
+			amtString = read.next();
+		}
+		double input = Double.parseDouble(amtString);
+		if (input < 0)
+		{
+			System.out.println("You cannot input a negative number.");
+			System.out.println("Please enter the amount you want to " + transanction +": ");
+			return getUserDouble(transanction);
+		}
+		return input;
+	}
+	
+	private static double spWithdraw(char accountType, double amount)
+	{
+		
+		try
+		{
+			
 			CallableStatement cs = conn.prepareCall("{CALL SP_WITHDRAW_AMOUNT(?,?,?)}");
 			cs.setInt(1, account_id);
-			if (accountType == 'C') 
+			if (accountType == 'C')
 			{
 				cs.setInt(2, 1);
 			}
@@ -451,95 +540,105 @@ public class Bank {
 			{
 				cs.setInt(2, 2);
 			}
-			cs.setDouble(3, amt);
+			cs.setDouble(3, amount);
 			//Executes
 			ResultSet rs = cs.executeQuery();
 			rs.next();
-			int balance = rs.getInt("AMOUNT");
-			if (balance == -1)
-			{
-				System.out.println("You have insufficient funds. Please try again.");
-			}
-			else System.out.println("Sucess! Your current balance in this Account is: " + balance + "$");
-			
-			
+			return  rs.getInt("AMOUNT");
 		}
 		catch (Exception ex) {
 			System.out.println(ex.toString());
 			System.exit(1);
+			return 0;
 		}
 
 	}
-
-	private static void depositMenu() {
-		// TODO Auto-generated method stub
-		try{
-			System.out.println("[C]heckings or [S]avings account?");
-			char accountType = read.next().charAt(0);
-			double amt = 0.0;
-			if(accountType == 'C'){
-				System.out.println("Please enter the amount you want to deposit: ");
-				amt = read.nextDouble();
-				while (amt < 0)
-				{
-					System.out.println("You cannot deposit a negative amount of money.");
-					System.out.println("Please enter the amount you want to deposit: ");
-					amt = read.nextDouble();
-				}
-				CallableStatement cs = conn.prepareCall("{CALL SP_DEPOSIT_AMOUNT(?,?,?)}");
-				cs.setInt(1, account_id);
+	
+	private static double spGetCurrentBalance(char accountType)
+	{
+		try
+		{
+			CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
+			cs.setInt(1, account_id);
+			if (accountType == 'C')
+			{
 				cs.setInt(2, 1);
-				cs.setDouble(3, amt);
-				//Executes
-				ResultSet rs = cs.executeQuery();
-				//If Results is empty, it means it doesn't exist
-				if (!rs.isBeforeFirst()) {
-					System.out.println("It doesnt exist!!");
-				}
-				else{
-					rs.next();
-					int balance = rs.getInt("AMOUNT");
-					System.out.println("Your current balance in Checkings Account is: " + balance + "$");
-				}
-
-			    //conn.close();
-
 			}
-			
-			else if(accountType == 'S'){
-				System.out.println("Please enter the amount you want to withdraw: ");
-				amt = read.nextDouble();
-				CallableStatement cs = conn.prepareCall("{CALL SP_DEPOSIT_AMOUNT(?,?,?)}");
-				cs.setInt(1, account_id);
+			else if (accountType == 'S')
+			{
 				cs.setInt(2, 2);
-				cs.setDouble(3, amt);
-				//Executes
-				ResultSet rs = cs.executeQuery();
-				//If Results is empty, it means it doesn't exist
-				if (!rs.isBeforeFirst()) {
-					System.out.println("It doesnt exist!!");
-				}
-				else{
-					rs.next();
-					int balance = rs.getInt("AMOUNT");
-					System.out.println("Your current balance in Savings Account is: " + balance + "$");
-				}
-
-			    //conn.close();
-
 			}
-			
-			else{
-				System.out.println("Invalid Entry!!");
-				withdrawalMenu();
-			}
-			
+			//Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			double currentBalance = rs.getInt("AMOUNT");
+			System.out.println("Your current balance is: $" + currentBalance);
+			return currentBalance;
 			
 		}
 		catch (Exception ex) {
 			System.out.println(ex.toString());
 			System.exit(1);
+			return 0;
 		}
 		
 	}
-}
+	
+	private static double spDespoit(char accountType, double amount)
+	{
+		try
+		{
+			CallableStatement cs = conn.prepareCall("{CALL SP_DEPOSIT_AMOUNT(?,?,?)}");
+			cs.setInt(1, account_id);
+			if (accountType == 'C')
+			{
+				cs.setInt(2, 1);
+			}
+			else if (accountType == 'S')
+			{
+				cs.setInt(2, 2);
+			}
+			cs.setDouble(3, amount);
+			//Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			return  rs.getInt("AMOUNT");
+		}
+		catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+			return 0;
+		}
+
+	}
+
+	
+	private static void depositMenu() {
+		double amt;
+	
+			System.out.println("[C]heckings or [S]avings account?");
+			char accountType = getUserAccountType();
+			double currentBalance = spGetCurrentBalance(accountType);
+			System.out.println("Please enter the amount you want to deposit: ");
+			amt = getUserDouble("deposit");
+			currentBalance = spDespoit(accountType, amt);
+			System.out.println("Success! Your current balance in this Account is: $ " + currentBalance);
+			
+		}
+	
+	private static boolean isDouble(String s)
+	{
+		try
+		{
+			Double.parseDouble(s);
+			return true;
+		}
+		catch(Exception ex)
+		{
+			return false;
+		}
+	}
+	
+		
+	}
+
