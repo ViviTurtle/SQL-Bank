@@ -233,6 +233,7 @@ public class Bank {
 	
 	/*
 	 * After logging in Main Menu
+	 * Gives options to the user to select a function
 	 */
 	private static void accountMainMenu() {
 		while (true) {
@@ -293,11 +294,15 @@ public class Bank {
 	}
 
 
+   /*
+    *Deletes/deactivates the account of the User
+	*/
 	private static boolean deleteAccountMenu() {
 		System.out.println("Are you sure you want to delete your account?");
 		System.out.println("[Y]es or [N]o?");
 		char value = read.next().charAt(0);
 		boolean validated = false;
+		//If the user is sure to delete the account
 		if (value == 'Y'){
 			try {
 				//Prepares to call Stored Procedure
@@ -411,6 +416,11 @@ public class Bank {
 */
 	}
 
+	/*
+	* It provides the current balance available in the Users checking's and saving's
+	* On Users request
+	 */
+
 	private static void viewBalanceMenu() {
 		try{
 			System.out.println("[C]heckings or [S]avings account?");
@@ -463,6 +473,10 @@ public class Bank {
 		}
 
 	}
+
+	/*
+	* Helper method to check whether the User has entered the correct input for account type
+	 */
 	
 	private static char getUserAccountType()
 	{
@@ -475,6 +489,12 @@ public class Bank {
 		}
 		return accountType;
 	}
+
+	/*
+	* WithdrawalMenu helps the user withdraw desired amount from the desired account type
+	* Also checks whether the User has valid and non-negative input
+	* Also makes sure that the account has valid and non-negative balance
+	 */
 
 	private static void withdrawalMenu() {
 		double amt;
@@ -504,6 +524,11 @@ public class Bank {
 		}
 
 	}
+
+	/*
+	* Helper method which checks whether the amount entered by user is valid and non-negative
+	 */
+
 	
 	private static double getUserDouble(String transanction)
 	{
@@ -523,6 +548,11 @@ public class Bank {
 		}
 		return input;
 	}
+
+	/*
+	* Helper method which updates the amount in account and database once withdrawal is carried out 
+	 */
+
 	
 	private static double spWithdraw(char accountType, double amount)
 	{
@@ -553,6 +583,10 @@ public class Bank {
 		}
 
 	}
+
+	/*
+	* Helper method which updates amount in the users account and database
+	 */
 	
 	private static double spGetCurrentBalance(char accountType)
 	{
@@ -583,7 +617,9 @@ public class Bank {
 		}
 		
 	}
-	
+	/*
+	* Helper method which updates the amount in account and database once deposit is carried out 
+	 */
 	private static double spDespoit(char accountType, double amount)
 	{
 		try
@@ -612,6 +648,13 @@ public class Bank {
 
 	}
 
+	/*
+	* DepositlMenu helps the user withdraw desired amount from the desired account type
+	* Also checks whether the User has valid and non-negative input
+	* Also makes sure that the account has valid and non-negative balance
+	 */
+
+
 	
 	private static void depositMenu() {
 		double amt;
@@ -626,6 +669,9 @@ public class Bank {
 			
 		}
 	
+	/*
+	*Checks if the input is double.
+	 */
 	private static boolean isDouble(String s)
 	{
 		try
