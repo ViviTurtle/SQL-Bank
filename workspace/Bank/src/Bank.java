@@ -143,6 +143,9 @@ public class Bank {
 	
 
 
+	/*
+	 * Delete Menu. Deletes the account of the User
+	 */
 
 	private static boolean deleteAccountMenu() {
 		System.out.println("Are you sure you want to delete your account?");
@@ -171,11 +174,21 @@ public class Bank {
 		System.out.println("Incorrect Input. Please try again!!");
 		return deleteAccountMenu();
 	}
+	
+	/*
+	 * Check history Menu. Provides the information of transaction history of the User
+	 */
 
 	private static void checkHistoryMenu() {
 		// TODO Auto-generated method st ub
 
 	}
+	
+	/*
+	 * Transfer Menu. Allows the User1 to transfer amount from one account to  User2 account
+	 * Checks if the User1 is transfering valid and a non-negative amount.
+	 * Sets the new amount in the User1 and User2 account  
+	 */
 
 	private static void transferMenu() {
 		double amt;
@@ -199,7 +212,9 @@ public class Bank {
 	}
 
 	
-
+	/*
+	 * ViewBalance Menu. View current balance of Users checkings and savings account
+	 */
 	private static void viewBalanceMenu() {
 
 		System.out.println("[C]heckings or [S]avings account?");
@@ -212,7 +227,11 @@ public class Bank {
 	}
 
 	
-
+	/*
+	 * Withdrawal Menu. Allows User to withdraw some amount from its checking/savings account
+	 * Validates whether the entered amount is valid and non-negative.
+	 * Sets the new amount as the current balance for the User's
+	 */
 	private static void withdrawalMenu() {
 		double amt;
 		try {
@@ -240,7 +259,11 @@ public class Bank {
 	}
 
 	
-
+	/*
+	 * Deposit Menu. Allows User to deposit some amount from its checking/savings account
+	 * Validates whether the entered amount is valid and non-negative.
+	 * Sets the new amount as the current balance for the User's
+	 */
 	private static void depositMenu() {
 		double amt;
 
