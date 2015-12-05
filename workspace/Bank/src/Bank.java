@@ -248,6 +248,7 @@ public class Bank {
 				break;
 			case T:
 				transferMenu();
+				break;
 			case V:
 				viewBalanceMenu();
 				break;
@@ -353,67 +354,100 @@ public class Bank {
 	}
 
 	private static void transferMenu() {
-		/*
-		try{
-			System.out.println("From your [C]heckings or [S]avings account?");
-			String accountType = read.next();
-			while (!accountType.equals("C") && !accountType.equals("S"))
+		double amt;
+		System.out.println("Would you like to transfer from your [C]heckings or [S]avings account?");
+		char accountType = getUserAccountType();
+		System.out.println("Please enter the number of the account you would like to transfer to.");
+		int transferAccountID = getUserTranferAccountID();
+		System.out.println("Would you like to transfer to their [C]heckings or [S]avings account?");
+		char transferAccountType = getUserAccountType();
+		double currentBalance = spGetCurrentBalance(accountType);
+		System.out.println("Please enter the amount you want to transfer: ");
+		amt = getUserDouble("transfer");
+		while (amt > currentBalance)
+		{
+			System.out.println("Your withdraw amount is greater than your current balance.");
+			System.out.println("Your current balance is: $" + currentBalance);
+			System.out.println("Please enter the amount you want to withdraw: ");
+			amt = getUserDouble("transfer");
+		}
+		currentBalance = spTransfer(accountType, transferAccountID, transferAccountType, amt);
+		System.out.println("Success! Your current balance in this Account is: $ " + currentBalance);
+		}
+		
+	
+	
+
+
+	private static double spTransfer(char accountType, int transferAccountID, char transferAccountType, double amt) {
+		try
+		{
+			
+			CallableStatement cs = conn.prepareCall("{CALL SP_TRANSFER_AMOUNT(?,?,?,?,?)}");
+			cs.setInt(1, account_id);
+			if (accountType == 'C')
 			{
-				System.out.println("Invalid Input");
-				System.out.println("From your [C]heckings or [S]avings account?");
-				accountType = read.next();
-			}
-				
-			
-			
-			if(accountType == 'C'){
-				CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
-				cs.setInt(1, account_id);
 				cs.setInt(2, 1);
-				//Executes
-				ResultSet rs = cs.executeQuery();
-				//If Results is empty, it means it doesn't exist
-				if (!rs.isBeforeFirst()) {
-					System.out.println("It doesnt exist!!");
-				}
-				else{
-					rs.next();
-					//returns the ACCOUNT_ID column
-					int balance = rs.getInt("AMOUNT");
-					System.out.println("Your current balance in Checkings Account is: " + balance + "$");
-				}
-				
-			}	
-			else if(accountType == 'S'){
-				CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
-				cs.setInt(1, account_id);
+			}
+			else if (accountType == 'S')
+			{
 				cs.setInt(2, 2);
-				//Executes
-				ResultSet rs = cs.executeQuery();
-				//If Results is empty, it means it doesn't exist
-				if (!rs.isBeforeFirst()) {
-					System.out.println("It doesnt exist!!");
-				}
-				else{
-					rs.next();
-					//returns the ACCOUNT_ID column
-					int balance = rs.getInt("AMOUNT");
-					System.out.println("Your current balance in Savings Account is: " + balance + "$");
-				}
 			}
-			else{
-				System.out.println("Invalid Entry!!");
-				viewBalanceMenu();
+			cs.setDouble(3, transferAccountID);
+			if (transferAccountType == 'C')
+			{
+				cs.setInt(4, 1);
 			}
+			else if (transferAccountType == 'S')
+			{
+				cs.setInt(4, 2);
+			}
+			cs.setDouble(5, amt);
+			//Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			return  rs.getInt("AMOUNT");
 		}
 		catch (Exception ex) {
 			System.out.println(ex.toString());
 			System.exit(1);
-
+			return 0;
 		}
+	}
 
-	
-*/
+	private static int getUserTranferAccountID()
+	{
+		String accountIDString = read.next();
+		while (!isDouble(accountIDString) || !spAccountExists(Integer.parseInt(accountIDString))) 
+		{
+			System.out.println("Invalid Account");
+			System.out.println("Please enter the number of the account you would like to transfer to.");
+			accountIDString = read.next();
+		}
+		return Integer.parseInt(accountIDString);
+	}
+
+	private static boolean spAccountExists(int accountID) {
+
+		try {
+			//Prepares to call Stored Procedure
+			CallableStatement cs = conn.prepareCall("{CALL SP_ACCOUNT_EXISTS(?)}");
+			//Sets parameters
+			cs.setInt(1, accountID);
+			//Executes
+			ResultSet rs = cs.executeQuery();
+			
+			
+			//If result doesn't have columns return false.
+			if (!rs.isBeforeFirst()) {
+				return false;
+			}
+
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+		}
+		return true;
 	}
 
 	/*
