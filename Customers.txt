@@ -1,0 +1,3 @@
+DB,SPARTANS,Vivi.Langga@gmail.com,admin,password
+Bob,tester1,tester1@gmail.com,tester1,test
+Alice,tester2,tester2@gmail.com,tester2,test
