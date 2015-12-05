@@ -1,11 +1,12 @@
 import java.util.Scanner;
 
 public class UserInput {
-	static Scanner read;
-	static SqlProcedures sqlProcedures;
+	Scanner read;
+	SqlProcedures sqlProcedures;
 
-	public UserInput(Scanner read) {
+	public UserInput(Scanner read,SqlProcedures sqlProcedures ) {
 		this.read = read;
+		this.sqlProcedures = sqlProcedures;
 	}
 
 	/*

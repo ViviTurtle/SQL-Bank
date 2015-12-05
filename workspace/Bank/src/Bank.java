@@ -17,7 +17,7 @@ public class Bank {
 
 		read = new Scanner(System.in);
 		sqlProcedures = new SqlProcedures(read);
-		userInput = new UserInput(read);
+		userInput = new UserInput(read, sqlProcedures);
 		System.out.println("Welcome to Spartan Bank");
 		mainMenuOptions option = null;
 		while (true) {
