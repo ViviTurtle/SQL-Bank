@@ -180,8 +180,9 @@ public class Bank {
 	 */
 
 	private static void checkHistoryMenu() {
-		// TODO Auto-generated method st ub
-
+		System.out.println("Please enter the amount of history you would like to see");
+		int historyAmount = (int) userInput.getUserDouble("view"); 
+		sqlProcedures.checkHistory(historyAmount);
 	}
 	
 	/*
@@ -208,7 +209,11 @@ public class Bank {
 			amt = userInput.getUserDouble("transfer");
 		}
 		currentBalance = sqlProcedures.transfer(accountType, transferAccountID, transferAccountType, amt);
-		System.out.println("Success! Your current balance in this Account is: $ " + currentBalance);
+		if (currentBalance> 0)
+		{
+			System.out.println("Success! Your current balance in this Account is: $ " + currentBalance);
+		}
+		
 	}
 
 	
