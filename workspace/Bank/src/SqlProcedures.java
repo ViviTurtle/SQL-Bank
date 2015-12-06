@@ -46,9 +46,8 @@ public class SqlProcedures {
 			rs.next();
 			return rs.getDouble("Amount");
 		} catch (Exception ex) {
-			System.out.println(ex.toString());
-			System.exit(1);
-			return 0;
+			System.out.println("You cannot transfer to your own account");
+			return -1;
 		}
 	}
 
@@ -291,6 +290,37 @@ public class SqlProcedures {
 			System.out.println(ex.toString());
 			System.exit(1);
 			return -1;
+		}
+	}
+	
+	protected void checkHistory(int historyAmount)
+	{
+		try {
+
+			CallableStatement cs = conn.prepareCall("{CALL SP_CHECK_HISTORY(?,?)}");
+			cs.setInt(1, account_id);
+			cs.setInt(2, historyAmount);
+	
+			// Executes
+			ResultSet rs = cs.executeQuery();
+			// If Results is empty, it means it doesn't exist
+			if (!rs.isBeforeFirst()) {
+				System.out.println("You have no Transanction History");
+			} else {
+				while (rs.next())
+				{
+					double test = rs.getDouble("AMOUNT");
+					// Prints the mysql data
+					System.out.printf("Account Type:%38s \nTransanction Type:%33s \nAmount: %43f \nDate: %45s ", rs.getString("ACCOUNT_TYPE"), rs.getString("TRANS_TYPE"), rs.getDouble("AMOUNT"),rs.getString("TRANSANCTION_DATE"));
+					System.out.println();
+					System.out.println();
+				}
+				
+		       } 
+			}
+		catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
 		}
 	}
 

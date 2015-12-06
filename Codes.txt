@@ -1,4 +1,4 @@
-CHK,ACCOUNT,Checking Accout
+CHK,ACCOUNT,Checking Account
 SAV,ACCOUNT,Savings Account
 WITH,TRANSANCTION,Withdrawal Transanction
 DEP,TRANSANCTION,Deposit Transanction
