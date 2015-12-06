@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class SqlProcedures {
+	//Initiates required DB paramters
 	// JDBC driver name and database URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/Bank";
@@ -16,6 +17,12 @@ public class SqlProcedures {
 	Scanner read;
 	int account_id;
 
+	/*
+	 * Initiates class so we may call functions
+	 * @param read the scanner we may use if we need user input
+	 * @throws ClassNotFoundException if JDBC not on computer
+	 * @throws SQLException if mysql not on computer
+	 */
 	public SqlProcedures(Scanner read) throws ClassNotFoundException, SQLException {
 		// initialize JDBC
 		Class.forName(JDBC_DRIVER);
@@ -23,7 +30,15 @@ public class SqlProcedures {
 		this.read = read;
 
 	}
-
+	
+	/*
+	 * Connects to SQL server and transfers cash to another account
+	 * @param accountType The account type (Checking or Saving) to transfer from
+	 * @param transferAccountID The account ID to transfer to
+	 * @param transferAccountType The account Type to transfer to
+	 * @param amt the amount to transfer
+	 * @return The resulting amount left in account
+	 */
 	protected double transfer(char accountType, int transferAccountID, char transferAccountType, double amt) {
 		try {
 
@@ -51,7 +66,13 @@ public class SqlProcedures {
 		}
 	}
 
-	protected boolean validateLogin(String username, String password) {
+	/*
+	 * Connects to SQL server and Validates a username and password combination
+	 * @param username The username to login with
+	 * @param password The password to login with
+	 * @return 0 if invalid and the account id if valid
+	 */
+	protected int validateLogin(String username, String password) {
 		try {
 			// Prepares to call Stored Procedure
 			CallableStatement cs = conn.prepareCall("{CALL SP_LOGIN(?,?)}");
@@ -68,17 +89,17 @@ public class SqlProcedures {
 			if (account_id == -1) {
 				System.out.println(
 						"Account was deactivated. Please contact Vivi Langga at (408) 607-XXXX for any questons.");
-				return false;
+				return 0;
 			} else if (account_id == -2) {
 				System.out.println("Invalid Login. Returning to main menu...");
-				return false;
+				return 0;
 			}
 
 		} catch (Exception ex) {
 			System.out.println(ex.toString());
 			System.exit(1);
 		}
-		return true;
+		return account_id;
 	}
 
 	/*
@@ -92,8 +113,8 @@ public class SqlProcedures {
 	 * 
 	 * @param username the Username to be inserted
 	 * 
-	 * @param password the Password to be inserted returns the Account_ID
-	 * created from the insert
+	 * @param password the Password to be inserted returns the Account_ID created from the insert
+	 * @return the Accound ID inserted
 	 */
 	protected int insertAccount(String firstName, String lastName, String email, String username, String password) {
 		try {
@@ -119,6 +140,11 @@ public class SqlProcedures {
 
 	}
 
+	/*
+	 * Connects to SQL server and checks if an account exists
+	 * @param accountID The account ID to check
+	 * @return true if the account exist, or false if it doesn't.
+	 */
 	protected boolean accountExists(int accountID) {
 
 		try {
@@ -141,6 +167,12 @@ public class SqlProcedures {
 		return true;
 	}
 
+	/*
+	 * Connects to SQL server withdraws from an account
+	 * @param accountType The account type (Checking or Saving) to withdraw from
+	 * @param amount The amount to withdraw
+	 * @return the amount left in account
+	 */
 	protected double withdraw(char accountType, double amount) {
 
 		try {
@@ -165,6 +197,11 @@ public class SqlProcedures {
 
 	}
 
+	/*
+	 * Connects to SQL server gets the current Balance from account
+	 * @param accountType The account type (Checking or Saving) to withdraw from
+	 * @return the balance in account
+	 */
 	protected double getCurrentBalance(char accountType) {
 		try {
 			CallableStatement cs = conn.prepareCall("{CALL SP_VIEW_BALANCE(?,?)}");
@@ -189,6 +226,12 @@ public class SqlProcedures {
 
 	}
 
+	/*
+	 * Connects to SQL server gets the deposits to an account
+	 * @param accountType The account type (Checking or Saving) to deposit from
+	 * @param amount The amount to deposit
+	 * @return the balance in account
+	 */
 	protected double deposit(char accountType, double amount) {
 		try {
 			CallableStatement cs = conn.prepareCall("{CALL SP_DEPOSIT_AMOUNT(?,?,?)}");
@@ -241,6 +284,10 @@ public class SqlProcedures {
 		return false;
 	}
 
+	/*
+	 * Connects to SQL server and marks an account inactive
+	 * @return true if a success, otherwise false
+	 */
 	protected boolean deleteAccount() {
 		try {
 			CallableStatement cs = conn.prepareCall("{CALL SP_DELETE_ACCOUNT(?,?)}");
@@ -257,6 +304,11 @@ public class SqlProcedures {
 			ResultSet rs = cs.executeQuery();
 			rs.next();
 			// returns the ACCOUNT_ID column
+			boolean validatated= rs.getBoolean("result");
+			if (!validatated)
+			{
+				System.out.println("Invalid Account");
+			}
 			return rs.getBoolean("result");
 
 		} catch (Exception ex) {
@@ -266,6 +318,11 @@ public class SqlProcedures {
 		}
 	}
 
+	/*
+	 * Connects to SQL server and gets the current Balance from account
+	 * @param accountType The account type (Checking or Saving) to withdraw from
+	 * @return the balance in account
+	 */
 	protected double viewBalance(char accountType) {
 		try {
 
@@ -293,6 +350,10 @@ public class SqlProcedures {
 		}
 	}
 	
+	/*
+	 * Connects to SQL server and gets the transanction history of a customer
+	 * @param historyAmount The amount of history the user wants to see
+	 */
 	protected void checkHistory(int historyAmount)
 	{
 		try {
@@ -322,6 +383,125 @@ public class SqlProcedures {
 			System.out.println(ex.toString());
 			System.exit(1);
 		}
+	}
+
+	/*
+	 * Connects to SQL server and gets the total cash in the bank from all the customers
+	 * @return the total amount of cash from the customers
+	 */
+	protected double totalCash() {
+		try {
+			// Prepares to call Stored Procedure
+			CallableStatement cs = conn.prepareCall("{CALL SP_TOTAL_CASH()}");
+			// Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			// If result returned 1, then it exists, else returns 0
+			return rs.getDouble("totalCash");
+
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+			return -1;
+		}
+
+	}
+
+	/*
+	 * Connects to SQL server and gets the total of Inactive or Active users.
+	 * @param input the input Active or Inactive
+	 * @return the total amount of that input's customers
+	 */
+	protected int getTotalCustomers(char input) {
+		try {
+			CallableStatement cs = conn.prepareCall("{CALL SP_TOTAL_CUSTOMERS()}");	
+			// Executes
+			ResultSet rs = cs.executeQuery();
+			while (rs.next())
+			{
+				if (input == 'A') {
+					if (rs.getInt("ACTIVE") == 1)
+					{
+						return rs.getInt("TOTAL");
+					}
+				} else if (input == 'N') {
+					if (rs.getInt("ACTIVE") == 0)
+					{
+						return rs.getInt("TOTAL");
+					}
+				}
+			}
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+			return 0;
+		}
+		return -1;
+		
+	}
+
+	/*
+	 * Admin connects to SQL server marks an account active
+	 * @return true if a success, otherwise false
+	 */
+	protected boolean reactivateAccount(String username, String password) {
+		
+		try {
+			// Prepares to call Stored Procedure
+			CallableStatement cs = conn.prepareCall("{CALL SP_REACTIVATE_ACCOUNT(?,?,?)}");
+			cs.setInt(1, account_id);
+			cs.setString(2, password);
+			cs.setString(3, username);
+			// Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			// If result returned 1, then it exists, else returns 0
+			if (rs.getInt("result") == -1)
+			{
+				System.out.println("Incorrect password");
+				return false;
+			}
+			else if (rs.getInt("result") == 0)
+			{
+				System.out.println("No such username.");
+				return false;
+			}
+			else
+			{
+				System.out.println("Success! Account: " + username+ " is now active.");
+				return true;
+			}
+
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+			return false;
+		}
+		
+	}
+
+	/*
+	 * Connects to SQL server and checks if a customer is a premium member by which they in the top 75% of balance in the bank
+	 * @param account_id the Account ID to check
+	 * @return true if the account is a success, otherwise false
+	 */
+	public boolean checkPremium(int account_id) {
+		try {
+			// Prepares to call Stored Procedure
+			CallableStatement cs = conn.prepareCall("{CALL SP_CHECK_PREMIUM(?)}");
+			cs.setInt(1, account_id);
+			// Executes
+			ResultSet rs = cs.executeQuery();
+			rs.next();
+			// If result returned 1, then it exists, else returns 0
+			return rs.getBoolean("result");
+
+		} catch (Exception ex) {
+			System.out.println(ex.toString());
+			System.exit(1);
+			return false;
+		}
+
 	}
 
 }
