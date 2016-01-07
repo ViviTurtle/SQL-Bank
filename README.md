@@ -5,7 +5,11 @@
 
 #####Project 
 
-Implemented a simple Bank system that allows customers to create an account, deposit, withdraw, transfer, check transanctions, and delete their account. All data is stored on a mySQL Database
+Implemented a simple CLI mySQL Bank system with the following properties:
+♦ Customers can create an account, deposit, withdraw, transfer, check transactions, and delete their account. 
+♦ All data is stored in a mySQL Database
+♦ Administrators can reactivate an old account, view total cash in the bank, and the current amount of active and non-active users.
+♦ Users may get notified if they are eligible for a premium account
 
 ###Project Requirements
  
